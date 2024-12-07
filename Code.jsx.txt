@@ -1,0 +1,158 @@
+import React, { useState } from 'react';
+
+const OrderSystem = () => {
+  const [orderNumber, setOrderNumber] = useState('');
+  const [nowPreparing, setNowPreparing] = useState([]);
+  const [nowServing, setNowServing] = useState([]);
+
+  const addOrder = () => {
+    if (orderNumber.trim() !== '') {
+      setNowPreparing([...nowPreparing, orderNumber]);
+      setOrderNumber('');
+    }
+  };
+
+  const moveToNowServing = (index) => {
+    const order = nowPreparing[index];
+    setNowServing([...nowServing, order]);
+    setNowPreparing(nowPreparing.filter((_, i) => i !== index));
+  };
+
+  const removeFromNowServing = (index) => {
+    setNowServing(nowServing.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      width: '100vw',
+      margin: 0,
+      padding: '20px',
+      boxSizing: 'border-box',
+      fontFamily: 'Arial, sans-serif',
+      color: 'black',
+      textAlign: 'center',
+      backgroundColor: 'white',
+    }}>
+      <div style={{ width: '100%', maxWidth: '1000px' }}>
+        <h1>Order System</h1>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+          <div style={{
+            width: '48%',
+            backgroundColor: '#4caf50',
+            padding: '20px',
+            borderRadius: '5px',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+          }}>
+            <h2 style={{ color: 'white' }}>Now Serving</h2>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              margin: '0 auto',
+            }}>
+              <tbody>
+                {nowServing.map((order, index) => (
+                  <tr key={index}>
+                    <td style={{
+                      border: '1px solid #ccc',
+                      padding: '10px',
+                      textAlign: 'center',
+                    }}>{order}</td>
+                    <td style={{
+                      border: '1px solid #ccc',
+                      padding: '10px',
+                      textAlign: 'center',
+                    }}>
+                      <button onClick={() => removeFromNowServing(index)} style={{
+                        backgroundColor: 'red',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '3px',
+                        cursor: 'pointer',
+                      }}>x</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div style={{
+            width: '48%',
+            backgroundColor: '#00bfff',
+            padding: '20px',
+            borderRadius: '5px',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+          }}>
+            <h2 style={{ color: 'white' }}>Now Preparing</h2>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              margin: '0 auto',
+            }}>
+              <tbody>
+                {nowPreparing.map((order, index) => (
+                  <tr key={index}>
+                    <td style={{
+                      border: '1px solid #ccc',
+                      padding: '10px',
+                      textAlign: 'center',
+                    }}>{order}</td>
+                    <td style={{
+                      border: '1px solid #ccc',
+                      padding: '10px',
+                      textAlign: 'center',
+                    }}>
+                      <button onClick={() => moveToNowServing(index)} style={{
+                        backgroundColor: '#4caf50',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '3px',
+                        cursor: 'pointer',
+                      }}>←</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '20px',
+        }}>
+          <input type="text"
+            value={orderNumber}
+            onChange={(e) => setOrderNumber(e.target.value)}
+            placeholder="Enter order number"
+            style={{
+              padding: '5px',
+              textAlign: 'center',
+              marginRight: '10px',
+              width: '200px',
+            }} />
+          <button onClick={addOrder} style={{
+            padding: '5px 10px',
+            backgroundColor: '#4caf50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}>
+            Add Order
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderSystem;
